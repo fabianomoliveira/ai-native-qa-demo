@@ -1,0 +1,28 @@
+{
+  "name": "ai-native-qa-demo",
+  "version": "1.0.0",
+  "description": "AI-native quality engineering demo: Playwright test pyramid + Claude Code skills, Playwright MCP and AI PR review",
+  "scripts": {
+    "start": "node app/server.js",
+    "start:buggy": "BUGGY=1 node app/server.js",
+    "test": "playwright test",
+    "test:api": "playwright test --project=api",
+    "test:e2e": "playwright test --project=e2e-chromium --project=e2e-mobile",
+    "test:catch-bugs": "bash scripts/verify-tests-catch-bugs.sh",
+    "typecheck": "tsc --noEmit",
+    "report": "playwright show-report"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
+    "@playwright/test": "^1.63.0",
+    "@types/node": "^26.6.6",
+    "ajv": "^8.20.0",
+    "typescript": "^7.0.2"
+  },
+  "private": true,
+  "overrides": {
+    "playwright-core": "1.63.0"
+  }
+}

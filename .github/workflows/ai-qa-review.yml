@@ -1,0 +1,27 @@
+name: AI QA review
+
+# Non-blocking: Claude reviews each PR for missing tests and test-quality issues
+# using the same qa-review skill engineers run locally. Humans decide what to act on.
+on:
+  pull_request:
+    types: [opened, synchronize, ready_for_review]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  qa-review:
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            Use the qa-review skill in .claude/skills/qa-review to review PR #${{ github.event.pull_request.number }}.
+            Diff base: origin/${{ github.base_ref }}. Follow CLAUDE.md. Post the result as one PR comment.
+          claude_args: --max-turns 15
